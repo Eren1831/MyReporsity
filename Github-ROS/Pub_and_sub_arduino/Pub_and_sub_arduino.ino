@@ -20,7 +20,7 @@ void setup()
 {
   pinMode(11, OUTPUT);
   nh.initNode();
-//  nh.advertise(chatter);
+ nh.advertise(chatter);
    nh.subscribe(sub);
 }
 
