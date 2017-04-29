@@ -1,16 +1,15 @@
 var SerialPort = require('serialport');
 var firebase   = require('firebase');
-var port = new SerialPort('/dev/ttyACM0',
+var port = new SerialPort('/dev/ttyUSB1',
 	{
-		baudrate : 115200 ,
+		baudrate : 9600 ,
 		parser: SerialPort.parsers.readline('\r\n')
 	});
-var veri="";
-  var config = {
+
+var config = {
     apiKey: "AIzaSyAXF5h18tVPGqO3o1iZsU2x3qIVpGq5E0I",
     authDomain: "eren123-fcd90.firebaseapp.com",
     databaseURL: "https://eren123-fcd90.firebaseio.com",
-    projectId: "eren123-fcd90",
     storageBucket: "eren123-fcd90.appspot.com",
     messagingSenderId: "35420556126"
   };
@@ -43,8 +42,32 @@ port.on('disconnet',function()
 {
 	console.log("port is closing..")
 });
-port.on('data',function(data)
-{
-console.log(data);
+
+
+port.on('data',function (val) {
+  var veri = val.split("|");
+  if(veri.length > 1)
+  {
+  	all["value"]["value1"]=veri[0];
+  	all["value"]["value2"]=veri[1];
+  	all["value"]["value3"]=veri[2];
+  	for(var i=0;i<3;i++)
+  	{
+  		console.log(veri[i]);
+  	}
+  }
 });
 
+
+var dataRef = firebase.database().ref('/');
+
+setTimeout(function()
+{
+setInterval(function (){
+	dataRef.set({
+		veri  :  all["value"]["value2"],
+		veri1 :  all["value"]["value1"],
+		veri2 :  all["value"]["value3"]
+	});
+}, 10);
+},1500);
