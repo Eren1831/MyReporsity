@@ -71,3 +71,27 @@ setInterval(function (){
 	});
 }, 10);
 },1500);
+setInterval(function ()
+{
+checkInternet(function(isConnected) {
+    if (isConnected) {
+        console.log("baglaniyor");
+    } else {
+        // not connected to the internet
+        console.log("internet yok");
+    }
+});
+},1000);
+function checkInternet(cb) {
+    require('dns').lookup('google.com',function(err) {
+        if (err && err.code == "ENOTFOUND") {
+            cb(false);
+            console.log("baglı degil");
+        } else {
+            cb(true);
+            console.log("baglı ");
+        }
+    })
+}
+
+
