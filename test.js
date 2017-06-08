@@ -1,10 +1,64 @@
+function checkInternet(cb) {
+    require('dns').lookup('google.com',function(err) {
+        if (err && err.code == "ENOTFOUND") {
+            cb(false);
+            console.log("baglı degil");
+        } else {
+            cb(true);
+            console.log("baglı ");
+            
+        }
+    })
+}
+/* İnternet Kontrol */
+
+
+setInterval(function ()
+{
+checkInternet(function(isConnected) {
+    if (isConnected) {
+        console.log("baglaniyor");
+        
+    } else {
+        // not connected to the internet
+        console.log("internet yok");
+        firebaseScan();
+    	
+    }
+});
+},1000);
+
+
+var firebaseScan=function()
+{
+
 var SerialPort = require('serialport');
 var firebase   = require('firebase');
-var port = new SerialPort('/dev/ttyUSB1',
+
+var port = new SerialPort('/dev/ttyUSB0',
 	{
 		baudrate : 9600 ,
 		parser: SerialPort.parsers.readline('\r\n')
 	});
+
+/*SerialPort.list(function(err,ports)
+{
+	ports.forEach(function(port)
+	{
+		console.log(port.comName);
+		console.log(port.pnpId);
+		
+		if(port.comName){
+		}
+	});
+}); */ 
+	
+/*	var serialport;
+	setTimeout(connect = function(){
+  serialPort = new com.SerialPort(serialportName, {
+    baudrate: 9600,
+    parser: SerialPort.parsers.readline('\r\n')
+  }, true); */ 
 
 var config = {
     apiKey: "AIzaSyAXF5h18tVPGqO3o1iZsU2x3qIVpGq5E0I",
@@ -14,10 +68,19 @@ var config = {
     messagingSenderId: "35420556126"
   };
   firebase.initializeApp(config);
- 
-var all={value: []}; 
+  var database = firebase.database();
 
-var database = firebase.database();
+
+var all = {
+
+	valueTemp    : [],
+	valueSpeed   : [],
+	valueCurrent : [],
+	valueVoltage : [],
+
+};
+
+var veri;
 
 port.on('open', function() {
   port.write('main screen turn on', function(err) {
@@ -26,13 +89,12 @@ port.on('open', function() {
     }
   });
 });
- 
+
 
 port.on('open',function()
 {
 	console.log('port is open..')
 });
-
 
 port.on('error', function(err) {
   console.log('Error: ', err.message);
@@ -43,55 +105,91 @@ port.on('disconnet',function()
 	console.log("port is closing..")
 });
 
-
 port.on('data',function (val) {
-  var veri = val.split("|");
+   veri = val.split("|");
   if(veri.length > 1)
   {
-  	all["value"]["value1"]=veri[0];
-  	all["value"]["value2"]=veri[1];
-  	all["value"]["value3"]=veri[2];
-  	for(var i=0;i<3;i++)
+  	all["valueTemp" ]["value1"] =veri[0];
+  	all["valueTemp" ]["value2"] =veri[1];
+
+  	all["valueSpeed"]["LefMotor"]   =veri[2];
+  	all["valueSpeed"]["RightMotor"] =veri[3];
+  	
+  	all["valueCurrent"]["MotorDriver1Input"]  =veri[4];
+  	all["valueCurrent"]["MotorDriver1OUTPUT"] =veri[5];
+  	all["valueCurrent"]["MotorDriver2INPUT"]  =veri[6];
+  	all["valueCurrent"]["MotorDriver2OUTPUT"] =veri[7];
+  	
+  	all["valueVoltage"]["MotorDriver1INPUT"]  =veri[8];
+  	all["valueVoltage"]["MotorDriver1OUTPUT"] =veri[9];
+  	all["valueVoltage"]["MotorDriver2INPUT"]  =veri[10];
+  	all["valueVoltage"]["MotorDriver2OUTPUT"] =veri[11];
+
+  	for(var i=0;i<=11;i++)
   	{
-  		console.log(veri[i]);
+  		//console.log(veri[i]);
   	}
   }
 });
 
 
-var dataRef = firebase.database().ref('/');
+var dataRefTemp = firebase.database().ref('/***TEMP***');
+var dataRefSpeed = firebase.database().ref('/***SPEED***');
+var dataRefCurrent=firebase.database().ref('/***CURRENT***');
+var dataRefVoltage=firebase.database().ref('/****VOLTAGE***');
 
 setTimeout(function()
 {
 setInterval(function (){
-	dataRef.set({
-		veri  :  all["value"]["value2"],
-		veri1 :  all["value"]["value1"],
-		veri2 :  all["value"]["value3"]
+	dataRefTemp.set({
+
+		temp1  : all["valueTemp" ]["value1"],
+		temp2 : all["valueTemp" ]["value2"],
+    });
+
+
+	dataRefSpeed.set({
+		LeftMotorSpeed :all["valueSpeed"]["LefMotor"], 
+		RightMotorSpeed :all["valueSpeed"]["RightMotor"],
+	
 	});
+
+	dataRefCurrent.set({
+		MotorDriver1INPUT :all["valueCurrent"]["MotorDriver1Input"],
+		MotorDriver1OUTPUT :all["valueCurrent"]["MotorDriver1OUTPUT"],
+		MotorDriver2INPUT :all["valueCurrent"]["MotorDriver2INPUT"],
+		MotorDriver2OUTPUT :all["valueCurrent"]["MotorDriver2OUTPUT"],
+	});
+
+	dataRefVoltage.set({
+
+		MotorDriverVoltage_1_INPUT :all["valueVoltage"]["MotorDriver1INPUT"] ,
+		MotorDriverVoltage_1_OUTPUT :all["valueVoltage"]["MotorDriver1OUTPUT"],
+		MotorDriverVoltage_2_INPUT :all["valueVoltage"]["MotorDriver2INPUT"] ,
+		MotorDriverVoltage_2_OUTPUT :all["valueVoltage"]["MotorDriver2OUTPUT"],
+	
+	});
+	
 }, 10);
-},1500);
-setInterval(function ()
+},2200);
+
+/*
+var firebaseScan=function()
 {
-checkInternet(function(isConnected) {
-    if (isConnected) {
-        console.log("baglaniyor");
-    } else {
-        // not connected to the internet
-        console.log("internet yok");
-    }
-});
-},1000);
-function checkInternet(cb) {
-    require('dns').lookup('google.com',function(err) {
-        if (err && err.code == "ENOTFOUND") {
-            cb(false);
-            console.log("baglı degil");
-        } else {
-            cb(true);
-            console.log("baglı ");
-        }
-    })
+var firebase   = require('firebase');
+var config = {
+    apiKey: "AIzaSyAXF5h18tVPGqO3o1iZsU2x3qIVpGq5E0I",
+    authDomain: "eren123-fcd90.firebaseapp.com",
+    databaseURL: "https://eren123-fcd90.firebaseio.com",
+    storageBucket: "eren123-fcd90.appspot.com",
+    messagingSenderId: "35420556126"
+  };
+
+  firebase.initializeApp(config);
+  //var database = firebase.database();
+console.log("firebase e baglanmaya çalışıyor..");
+
+} */
+
+
 }
-
-
