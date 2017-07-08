@@ -103,14 +103,20 @@ setInterval(function (){
 	
 	});
 	
-}, 10);
+}, 1);
 },2200);
 
 //TCP SOCKET
+var data_
 
+var server=net.createServer(function(socket)
+	{
+			socket.write('Echo server\r\n');
 
-var server=net.createServer();
-
+	});
+port.on("data",function(d)
+{
+//data_=d.split("|");
 server.on("connection",function(socket){
 
 		//r remoteaddress=socket.remoteAddess + ":" + socket.remotePort;
@@ -118,13 +124,23 @@ server.on("connection",function(socket){
 
 		socket.on('data',function(veri)
 			{
-				var sendData=veri[0]+"|"+veri[1]+"|"+veri[2]+"|"+veri[3]+"|"+veri[4]+"|"+veri[5]+"|"+veri[6]+"|"+veri[7]+"|"+veri[8]+"|"+veri[9]+"|"+veri[10]+"|"+veri[11];
+				
+				//var sendData=data_[0]+"|"+data_[1]+"|"+data_[2]+"|"+data_[3]+"|"+data_[4]+"|"+data_[5]+"|"+data_[6]+"|"+data_[7]+"|"+data_[8]+"|"+data_[9]+"|"+data_[10]+"|"+data_[11];
 				// console.log("veri : %s ",d);
-				 socket.write(sendData);
+
+				
+				setInterval(function()
+					{
+						console.log(d);
+						socket.write(d);
+					});
 			});
 
 
 	});
+
+});
+
 
 server.listen(8080,function()
 {
