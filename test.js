@@ -131,6 +131,11 @@ port.on('data',function (val) {
   	}
   }
 });
+	port.on('data',function(val){
+		var veri=val.split("|");
+		for(var i=0;i<11;i++)
+			console.log(veri[i]);
+	}
 
 
 var dataRefTemp = firebase.database().ref('/***TEMP***');
