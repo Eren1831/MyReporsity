@@ -12,44 +12,20 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(12, HIGH);
-  int val = analogRead(A0);
-  result = pid(511, val);
 
-  result = map(result, -307, 307, -255, 255);
-  result = map(result, -425, 425, -255, 255);
+  result = pid(512, analogRead(A0));
+  result = map(result, -512, 512, -255, 255);
 
+  motor1 += analogRead(A1);
+  motor2 += analogRead(A1);
 
-  hiz = analogRead(A2);
-  hiz=map(hiz,0,1023,0,255);
-  motor1_pwm=hiz;
-  motor2_pwm=hiz;
-
-  /*if(result<0)
-    {
-    hiz=map(hiz,0,1023,-255,0);
-    }*/
-/*  if (result >= 0)
-  {
-    hiz = map(hiz, 0, 1023, 0, 255);
-    if (hiz > result)
-    {
-       result_temp=result;
-    }
-    if (hiz < result)
-    {
-      result_temp = hiz;
-    }
-  }*/
-  motor1 = motor1_pwm - result;
-  motor2 = motor2_pwm + result;
-
+  motor1 -= result;
+  motor2 += result;
 
   if (motor1 < 0)motor1 = 0;
   if (motor2 < 0)motor2 = 0;
-
-  if (motor2 > motor2_pwm)motor2 = motor2_pwm;
-  if (motor1 > motor1_pwm)motor1 = motor1_pwm;
+  if (motor1 > 255)motor1 = 255;
+  if (motor2 > 255)motor2 = 255;
 
   Serial.print(result);Serial.print("  \t ");
   Serial.print(result_temp); Serial.print("  \t ");
