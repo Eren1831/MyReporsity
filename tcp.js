@@ -8,12 +8,11 @@ var all = {
 
 
 	valueTemp    : [],
-	valueSpeed   : [],
-	valueCurrent : [],
-	valueVoltage : [],
+	valueMotorRight  : [],
+	valueMotorLeft : [],
 	valueHor     : [],
 	valueBattery : [],
-
+	valueLight   : [],
 
 };
 
@@ -37,54 +36,63 @@ port.on('data',function (val) {
    veri = val.split("|");
   if(veri.length > 1)
   {
-  	all["valueTemp" ]["value1"] =veri[0];
-  	all["valueTemp" ]["value2"] =veri[1];
-  	all["valueTemp" ]["value3"] =veri[2];
-  	all["valueTemp" ]["value4"] =veri[3];
-  	all["valueTemp" ]["value5"] =veri[4];
-  	all["valueTemp" ]["value6"] =veri[5];
-  	all["valueTemp" ]["value7"] =veri[6];
-
-  	all["valueSpeed"]["LefMotor"]   =veri[7];
-  	all["valueSpeed"]["RightMotor"] =veri[8];
+  	all["valueTemp" ]["inTemp"] =veri[1];
+  	all["valueTemp" ]["outTemp"] =veri[2];
   	
-  	all["valueCurrent"]["MotorDriver1Input"]  =veri[9];
-  	all["valueCurrent"]["MotorDriver1OUTPUT"] =veri[10];
-  	all["valueCurrent"]["MotorDriver2INPUT"]  =veri[11];
-  	all["valueCurrent"]["MotorDriver2OUTPUT"] =veri[12];
+        all["valueMotorLeft" ]["motorLeftTemp"] =veri[3];
+  	all["valueMotorLeft"]["LeftMotorSpeed"]   =veri[4];
+  	all["valueMotorLeft"]["MotorDriver1Input"]  =veri[5];
+  	all["valueMotorLeft"]["MotorDriver1OUTPUT"] =veri[6];
+  	all["valueMotorLeft"]["MotorDriver2INPUT"]  =veri[7];
+  	all["valueMotorLeft"]["MotorDriver2OUTPUT"] =veri[8];
   	
-  	all["valueVoltage"]["MotorDriver1INPUT"]  =veri[13];
-  	all["valueVoltage"]["MotorDriver1OUTPUT"] =veri[14];
-  	all["valueVoltage"]["MotorDriver2INPUT"]  =veri[15];
-  	all["valueVoltage"]["MotorDriver2OUTPUT"] =veri[16];
+        all["valueMotorRight" ]["motorRightTemp"] =veri[9];
+  	all["valueMotorRight"]["RightMotorSpeed"] =veri[10];
+  	all["valueMotorRight"]["MotorDriver1INPUT"]  =veri[11];
+  	all["valueMotorRight"]["MotorDriver1OUTPUT"] =veri[12];
+  	all["valueMotorRight"]["MotorDriver2INPUT"]  =veri[13];
+  	all["valueMotorRight"]["MotorDriver2OUTPUT"] =veri[14];
 	
-	all["valueHor"]["status"]=veri[17];
-	all["valueHor"]["ambientTemp"]=veri[18];
-	all["valueHor"]["stackVoltage"]=veri[19];
-	all["valueHor"]["H2Voltage"]=veri[20];
-	all["valueHor"]["stackTemp"]=veri[21];
-	all["valueHor"]["current"]=veri[22];
-	all["valueHor"]["batteryVoltage"]=veri[23];
+	all["valueHor"]["status"]=veri[15];
+	all["valueHor"]["ambientTemp"]=veri[16];
+	all["valueHor"]["stackVoltage"]=veri[17];
+	all["valueHor"]["H2Voltage"]=veri[18];
+	all["valueHor"]["stackTemp"]=veri[19];
+	all["valueHor"]["current"]=veri[20];
+	all["valueHor"]["batteryVoltage"]=veri[21];
+        all["valueHor" ]["h2Temp"] =veri[22];
 
-	all["valueBattery"]["cell0"]=veri[24];
-	all["valueBattery"]["cell1"]=veri[25];
-	all["valueBattery"]["cell2"]=veri[26];
-	all["valueBattery"]["cell3"]=veri[27];
-	all["valueBattery"]["cell4"]=veri[28];
-	all["valueBattery"]["cell5"]=veri[29];
-	all["valueBattery"]["cell6"]=veri[30];
-	all["valueBattery"]["cell7"]=veri[31];
-	all["valueBattery"]["cell8"]=veri[32];
-	all["valueBattery"]["cell9"]=veri[33];
-	all["valueBattery"]["cell10"]=veri[34];
-	all["valueBattery"]["cell11"]=veri[35];
-	all["valueBattery"]["cell12"]=veri[36];
-	all["valueBattery"]["cell13"]=veri[37];
-	all["valueBattery"]["cell14"]=veri[38];
-	all["valueBattery"]["temp1"]=veri[39];
-	all["valueBattery"]["temp2"]=veri[40];
+	all["valueBattery"]["cell0"]=veri[23];
+	all["valueBattery"]["cell1"]=veri[24];
+	all["valueBattery"]["cell2"]=veri[25];
+	all["valueBattery"]["cell3"]=veri[26];
+	all["valueBattery"]["cell4"]=veri[27];
+	all["valueBattery"]["cell5"]=veri[28];
+	all["valueBattery"]["cell6"]=veri[29];
+	all["valueBattery"]["cell7"]=veri[30];
+	all["valueBattery"]["cell8"]=veri[31];
+	all["valueBattery"]["cell9"]=veri[32];
+	all["valueBattery"]["cell10"]=veri[33];
+	all["valueBattery"]["cell11"]=veri[34];
+	all["valueBattery"]["cell12"]=veri[35];
+	all["valueBattery"]["cell13"]=veri[36];
+	all["valueBattery"]["cell14"]=veri[37];
+	all["valueBattery"]["temp1"]=veri[38];
+	all["valueBattery"]["temp2"]=veri[39];
+        all["valueBattery" ]["batteryTemp"] =veri[40];
 	all["valueBattery"]["current"]=veri[41];
-
+	
+	all["valueLight"]["flasher"]=veri[42];
+	all["valueLight"]["kısa"]=veri[43];
+	all["valueLight"]["uzun"]=veri[44];
+	all["valueLight"]["sag"]=veri[45];
+	all["valueLight"]["sol"]=veri[46];
+	all["valueLight"]["neoSol"]=veri[47];
+	all["valueLight"]["neoSag"]=veri[48];
+        all["valueLight"]["silecek"]=veri[49];
+	all["valueLight"]["tavan"]=veri[50];
+	all["valueLİght"]["solKapı"]=veri[51];
+	all["valueLight"]["sagKapı"]=veri[52];
   	for(var i=0;i<=40;i++)
   	{
   		console.log(veri[i]);
@@ -106,9 +114,9 @@ var config = {
 var dataRefHor = firebase.database().ref('/***HORİZON***');
 var dataRefBattery = firebase.database().ref('***BATTERY***');
 var dataRefTemp = firebase.database().ref('/***TEMP***');
-var dataRefSpeed = firebase.database().ref('/***SPEED***');
-var dataRefCurrent=firebase.database().ref('/***CURRENT***');
-var dataRefVoltage=firebase.database().ref('/****VOLTAGE***');
+var dataRefLeftMotor = firebase.database().ref('/***LEFTMOTOR***');
+var dataRefRightMotor=firebase.database().ref('/***RİGHTMOTOR***');
+var dataRefLight=firebase.database().ref('/****LİGHT***');
 
 
 
@@ -117,8 +125,8 @@ setInterval(function (){
 
 	dataRefTemp.set({
 
-		temp1  : all["valueTemp" ]["value1"],
-		temp2 : all["valueTemp" ]["value2"],
+		temp1  : all["valueTemp" ]["inTemp"],
+		temp2 : all["valueTemp" ]["outTemp"],
     });
 
 	dataRefBattery.set({
@@ -137,9 +145,10 @@ setInterval(function (){
 		cell13 : all["valueBattery"]["cell12"],
 		cell14 : all["valueBattery"]["cell13"],
 		cell15 : all["valueBattery"]["cell14"],
-		cell16 : all["valueBattery"]["temp1"],
-		cell17 : all["valueBattery"]["temp2"],
-		cell18 : all["valueBattery"]["current"],
+		temp1 : all["valueBattery"]["temp1"],
+		temp2 : all["valueBattery"]["temp2"],
+		current : all["valueBattery"]["current"],
+		batteryTemp : all["valueBattery" ]["batteryTemp"],
 
     });
 
@@ -153,26 +162,38 @@ setInterval(function (){
 		batteryVoltage : all["valueHor"]["batteryVoltage"],
 		
     });
-	dataRefSpeed.set({
-		LeftMotorSpeed :all["valueSpeed"]["LefMotor"], 
+	dataRefMotorRight.set({
+		 
 		RightMotorSpeed :all["valueSpeed"]["RightMotor"],
+                MotorDriver2INPUT :all["valueCurrent"]["MotorDriver2INPUT"],
+		MotorDriver2OUTPUT :all["valueCurrent"]["MotorDriver2OUTPUT"],
+                MotorDriverVoltage_2_INPUT :all["valueVoltage"]["MotorDriver2INPUT"] ,
+		MotorDriverVoltage_2_OUTPUT :all["valueVoltage"]["MotorDriver2OUTPUT"],
+		MotorRight : all["valueTemp" ]["motorRightTemp"]
 	
 	});
 
-	dataRefCurrent.set({
+	dataRefMotorLeft.set({
+                LeftMotorSpeed :all["valueSpeed"]["LefMotor"],
 		MotorDriver1INPUT :all["valueCurrent"]["MotorDriver1Input"],
 		MotorDriver1OUTPUT :all["valueCurrent"]["MotorDriver1OUTPUT"],
-		MotorDriver2INPUT :all["valueCurrent"]["MotorDriver2INPUT"],
-		MotorDriver2OUTPUT :all["valueCurrent"]["MotorDriver2OUTPUT"],
-	});
-
-	dataRefVoltage.set({
-
-		MotorDriverVoltage_1_INPUT :all["valueVoltage"]["MotorDriver1INPUT"] ,
+                MotorDriverVoltage_1_INPUT :all["valueVoltage"]["MotorDriver1INPUT"] ,
 		MotorDriverVoltage_1_OUTPUT :all["valueVoltage"]["MotorDriver1OUTPUT"],
-		MotorDriverVoltage_2_INPUT :all["valueVoltage"]["MotorDriver2INPUT"] ,
-		MotorDriverVoltage_2_OUTPUT :all["valueVoltage"]["MotorDriver2OUTPUT"],
-	
+                MotorLeftTemp : all["valueTemp" ]["motorLeftTemp"],
+		
+	});
+        dataRefLight.set({
+                Flasher :all["valueLight"]["flasher"],
+		Kısa :all["valueLight"]["kısa"],
+		Uzun :all["valueLight"]["uzun"],
+                Sag :all["valueLight"]["sag"] ,
+		Sol :all["valueLight"]["sol"],
+                NeoSag : all["valueTemp" ]["neoSag"],
+                NeoSol : all["valueTemp" ]["neoSol"],
+		Silecek : all["valueTemp" ]["motorLeftTemp"],
+		Tavan   : all["valueTemp" ]["silecek"],
+		SolKapı : all["valueTemp" ]["solKapı"],
+		SagKapı : all["valueTemp" ]["sagKapı"],
 	});
 	
 }, 1000);
